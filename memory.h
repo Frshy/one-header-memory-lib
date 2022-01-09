@@ -48,12 +48,12 @@ namespace memory {
 		auto snapshot = CreateToolhelp32Snapshot( TH32CS_SNAPPROCESS, NULL );
 		if ( snapshot != INVALID_HANDLE_VALUE ) {
 			if ( Process32First( snapshot, &entry ) == TRUE ) {
-				while ( Process32Next( snapshot, &entry ) == TRUE ) {
-					if ( !stricmp( entry.szExeFile, process_name ) ) {
+				do {
+					if ( !strcmp( entry.szExeFile, process_name ) ) {
 						proc_id = entry.th32ProcessID;
 						break;
 					}
-				}
+				} while ( Process32Next( snapshot, &entry ) );
 			}
 		}
 
